@@ -29,7 +29,7 @@ namespace DataCalculation
             cptEcg.Children.RemoveAll(typeof(LineGraph));
             heardSoundList.Count = 30;
             heardSoundList.Collection.RemoveAll(typeof(Point));
-            cptEcg.AddLineGraph(heardSoundList, Color.FromArgb(0xFF, 0x00, 0x00, 0x00), 1, "位置");
+            cptEcg.AddLineGraph(heardSoundList, Color.FromArgb(0xFF, 0x00, 0x00, 0x00), 1, "位     置");
             cptEcg.AxisGrid.BorderBrush = new SolidColorBrush(Color.FromArgb(0, 0, 0, 255));
             cptEcg.Viewport.FitToView();
 
