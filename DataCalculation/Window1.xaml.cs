@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Research.DynamicDataDisplay;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,27 @@ namespace DataCalculation
     /// </summary>
     public partial class Window1 : Window
     {
+        private static PointList<Point> heardSoundList = new PointList<Point>();//定义函数
+        
         public Window1()
         {
             InitializeComponent();
+
+            cptEcg.Children.RemoveAll(typeof(LineGraph));
+            heardSoundList.Count = 30;
+            heardSoundList.Collection.RemoveAll(typeof(Point));
+            cptEcg.AddLineGraph(heardSoundList, Color.FromArgb(0xFF, 0x00, 0x00, 0x00), 1, "位置");
+            cptEcg.AxisGrid.BorderBrush = new SolidColorBrush(Color.FromArgb(0, 0, 0, 255));
+            cptEcg.Viewport.FitToView();
+
+        }
+        public void AppPoint(Point point, Point po)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                //   heardSoundList1.Add(point);
+                heardSoundList.Add(po);
+            }));
         }
     }
 }

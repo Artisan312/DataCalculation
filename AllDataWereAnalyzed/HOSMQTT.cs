@@ -13,12 +13,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace DataCalculation
+namespace AllDataWereAnalyzed
 {
-    class HOSMQTT : Person
+    class HOSMQTT:Person
     {
-        public static byte[] text;
-        public event ChangedHandler ChangeName;
+        public static  byte[] text;
+        public  event ChangedHandler ChangeName;
+        public event ChangedHandler Position;
         private static MqttClient mqttClient = null;
         private static IMqttClientOptions options = null;
         private static bool runState = false;
@@ -59,74 +60,74 @@ namespace DataCalculation
         /// <para>2 - 刚好一次</para>
         /// </summary>
         private static int QualityOfServiceLevel = 0;
-        public void Stop()
+        public  void Stop()
         {
             runState = false;
         }
 
-        public bool IsRun()
+        public  bool IsRun()
         {
             return (runState && running);
         }
         /// <summary>
         /// 启动客户端
         /// </summary>
-        public string Start()
+        public  string Start()
         {
-
-            //try
-            //{
-            runState = true;
-            if (mqttClient == null)
+             
+            try
+            {
+                runState = true;
+                if (mqttClient == null)
+                {
+                    
+                    System.Threading.Thread thread = new System.Threading.Thread(new System.Threading.ThreadStart(Work));
+                    thread.Start();
+                }
+                return "成功";
+            }
+            catch (Exception exp)
             {
 
-                System.Threading.Thread thread = new System.Threading.Thread(new System.Threading.ThreadStart(Work));
-                thread.Start();
+                return exp.Message;
             }
-            return "成功";
-            //}
-            //catch (Exception exp)
-            //{
-
-            //    return exp.Message;
-            //}
 
         }
         /// <summary>
         /// 
         /// </summary>
-        private void Work()
+        private  void Work()
         {
             running = true;
             // Console.WriteLine("Work >>Begin");
-            //try
-            //{
-            var factory = new MqttFactory();
-            mqttClient = factory.CreateMqttClient() as MqttClient;
-
-            options = new MqttClientOptionsBuilder()
-                .WithTcpServer(Variable.getServerUrl(), Variable.getPort())
-                .WithCredentials(Variable.getUserId(), Variable.getPassword())
-                .WithClientId(Guid.NewGuid().ToString().Substring(0, 5))
-                .Build();
-
-            mqttClient.ConnectAsync(options);
-            mqttClient.ConnectedHandler = new MqttClientConnectedHandlerDelegate(new Func<MqttClientConnectedEventArgs, Task>(Connected));
-            mqttClient.DisconnectedHandler = new MqttClientDisconnectedHandlerDelegate(new Func<MqttClientDisconnectedEventArgs, Task>(Disconnected));
-            mqttClient.ApplicationMessageReceivedHandler = new MqttApplicationMessageReceivedHandlerDelegate(new Action<MqttApplicationMessageReceivedEventArgs>(MqttApplicationMessageReceived));
-            while (runState)
+            try
             {
-                System.Threading.Thread.Sleep(100);
+                var factory = new MqttFactory();
+                mqttClient = factory.CreateMqttClient() as MqttClient;
+
+                options = new MqttClientOptionsBuilder()
+                    .WithTcpServer(ConfigurationManager.ConnectionStrings["ServerUrl"].ToString(), Convert.ToInt32(ConfigurationManager.AppSettings["Port"]))
+                    .WithCredentials(ConfigurationManager.AppSettings["UserId"], ConfigurationManager.AppSettings["Password"])
+                    .WithClientId(Guid.NewGuid().ToString().Substring(0, 5))
+                    .Build();
+
+                mqttClient.ConnectAsync(options);
+                mqttClient.ConnectedHandler = new MqttClientConnectedHandlerDelegate(new Func<MqttClientConnectedEventArgs, Task>(Connected));
+                mqttClient.DisconnectedHandler = new MqttClientDisconnectedHandlerDelegate(new Func<MqttClientDisconnectedEventArgs, Task>(Disconnected));
+                mqttClient.ApplicationMessageReceivedHandler = new MqttApplicationMessageReceivedHandlerDelegate(new Action<MqttApplicationMessageReceivedEventArgs>(MqttApplicationMessageReceived));
+                while (runState)
+                {
+                    System.Threading.Thread.Sleep(100);
+                }
+
+
             }
+            catch (Exception exp)
+            {
 
+                //exp.Message;
 
-            //}
-            //catch (Exception exp)
-            //{
-
-            //    //exp.Message;
-
-            //}
+            }
             //   Console.WriteLine("Work >>End");
             running = false;
             runState = false;
@@ -144,7 +145,7 @@ namespace DataCalculation
         /// <param name="Topic">发布主题</param>
         /// <param name="Message">发布内容</param>
         /// <returns></returns>
-        public string Publish(string Topic, string Message)
+        public  string Publish(string Topic, string Message)
         {
             try
             {
@@ -187,14 +188,14 @@ namespace DataCalculation
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        private async Task Connected(MqttClientConnectedEventArgs e)
+        private  async Task Connected(MqttClientConnectedEventArgs e)
         {
             try
             {
                 List<TopicFilter> listTopic = new List<TopicFilter>();
                 if (listTopic.Count <= 0)
                 {
-                    var topicFilterBulder = new TopicFilterBuilder().WithTopic(Variable.getTopic()).Build();
+                    var topicFilterBulder = new TopicFilterBuilder().WithTopic(ConfigurationManager.AppSettings["Topic"]).Build();
                     listTopic.Add(topicFilterBulder);
                     //Console.WriteLine("Connected >>Subscribe " + Topic);
                 }
@@ -211,7 +212,7 @@ namespace DataCalculation
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        private async Task Disconnected(MqttClientDisconnectedEventArgs e)
+        private  async Task Disconnected(MqttClientDisconnectedEventArgs e)
         {
             try
             {
@@ -236,11 +237,11 @@ namespace DataCalculation
         /// 接收消息触发事件
         /// </summary>
         /// <param name="e"></param>
-        private void MqttApplicationMessageReceived(MqttApplicationMessageReceivedEventArgs e)
+        private  void MqttApplicationMessageReceived(MqttApplicationMessageReceivedEventArgs e)
         {
             try
             {
-                text = e.ApplicationMessage.Payload;
+                text =e.ApplicationMessage.Payload;
                 string Topic = e.ApplicationMessage.Topic;
                 string QoS = e.ApplicationMessage.QualityOfServiceLevel.ToString();
                 string Retained = e.ApplicationMessage.Retain.ToString();
@@ -260,10 +261,20 @@ namespace DataCalculation
             set
             {
                 base.OnChanged(this, value, Age, ChangeName);
-                age = value;
+                age=value ;
                 OnPropertyChanged("Age");
+            }     
+        }
+        Point p=new Point(0,0);
+        public virtual Point point
+        {
+            get { return p; }
+            set
+            {
+                base.OnChanged(this, value, point, Position);
+                p = value;
+                OnPropertyChanged("point");
             }
         }
-
     }
 }
