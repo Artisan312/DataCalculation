@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AllDataWereAnalyzed
 {
-    public class PointList<T> : ObservableDataSource<T>
+    public class PointList<T>:ObservableDataSource<T>
     {
         public int Count { get; set; }
         public void Add(T t)

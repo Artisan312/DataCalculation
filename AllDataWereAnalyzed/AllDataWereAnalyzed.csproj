@@ -35,17 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ClosedXML">
-      <HintPath>..\..\DataAnalysis\DataAnalysis\bin\Debug\ClosedXML.dll</HintPath>
-    </Reference>
-    <Reference Include="DocumentFormat.OpenXml">
-      <HintPath>..\..\DataAnalysis\DataAnalysis\bin\Debug\DocumentFormat.OpenXml.dll</HintPath>
-    </Reference>
     <Reference Include="DynamicDataDisplay">
-      <HintPath>..\..\DataAnalysis\DataAnalysis\bin\Debug\DynamicDataDisplay.dll</HintPath>
-    </Reference>
-    <Reference Include="GetMedicalLibrary">
-      <HintPath>..\..\DataAnalysis\DataAnalysis\bin\Debug\GetMedicalLibrary.dll</HintPath>
+      <HintPath>..\DataCalculation\bin\Debug\DynamicDataDisplay.dll</HintPath>
     </Reference>
     <Reference Include="MessagePack">
       <HintPath>..\packages\MessagePack.1.8.80\lib\netstandard1.6\MessagePack.dll</HintPath>
