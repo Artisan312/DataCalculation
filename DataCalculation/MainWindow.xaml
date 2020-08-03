@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DataCalculation"
         mc:Ignorable="d"
         xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
-        Title="MainWindow" Height="500" Width="1200" WindowState="Maximized">
+        Title="MainWindow" Height="500" Width="1200" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="91*"/>
@@ -46,7 +46,7 @@
                 </d3:ChartPlotter.HorizontalAxis>
                 <d3:Header Content="2" HorizontalAlignment="Left" FontFamily="Microsoft YaHei UI" Foreground="#FF0C0B0B" FontSize="16" Height="16" Width="111"/>
             </d3:ChartPlotter>
-            <d3:ChartPlotter x:Name="cptEcg3"  Background="Transparent" BorderBrush="#FF4B53A2" Foreground="#FF9BDAE8" Grid.Row="2" >
+            <d3:ChartPlotter x:Name="cptEcg3"  Background="Transparent" BorderBrush="#FF4B53A2" Foreground="#FF9BDAE8" Grid.Row="1" Margin="0,146,0,10" Grid.RowSpan="2" >
                 <d3:ChartPlotter.VerticalAxis>
                     <d3:VerticalIntegerAxis />
                 </d3:ChartPlotter.VerticalAxis>
