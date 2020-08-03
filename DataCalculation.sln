@@ -5,13 +5,6 @@ VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCalculation", "DataCalculation\DataCalculation.csproj", "{5D99602E-75D0-49CE-BAAB-10E6201F3AF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllDataWereAnalyzed", "AllDataWereAnalyzed\AllDataWereAnalyzed.csproj", "{32F51620-5257-401F-BF26-2EE7FA7C1B77}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5AF92582-8854-4890-BB55-CC89E62FC625}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,10 +15,6 @@ Global
 		{5D99602E-75D0-49CE-BAAB-10E6201F3AF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D99602E-75D0-49CE-BAAB-10E6201F3AF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D99602E-75D0-49CE-BAAB-10E6201F3AF7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32F51620-5257-401F-BF26-2EE7FA7C1B77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32F51620-5257-401F-BF26-2EE7FA7C1B77}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32F51620-5257-401F-BF26-2EE7FA7C1B77}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32F51620-5257-401F-BF26-2EE7FA7C1B77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

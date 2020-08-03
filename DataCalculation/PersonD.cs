@@ -24,47 +24,15 @@ namespace DataCalculation
     }
     class PersonD : MongoBaseEntity
     {
-        public int DistanceA
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public int DistanceB
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public int DistanceC
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         public double Factor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public int rssi { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public TimeSpan time { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public List<int> RssiA { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public List<int> RssiB { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public List<int> RssiC { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int DistanceA { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int DistanceB { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int DistanceC { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public Point point { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        int MongoBaseEntity.DistanceB { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

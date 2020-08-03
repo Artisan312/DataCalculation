@@ -60,7 +60,7 @@ namespace DataCalculation
             return Convert.ToInt32(ConfigurationManager.AppSettings["Calibration"]);
         }
         /// <summary>
-        /// 环境因素
+        /// 误差
         /// </summary>
         /// <returns></returns>
         public static double getError()
@@ -76,7 +76,7 @@ namespace DataCalculation
             return Convert.ToInt32(ConfigurationManager.AppSettings["Deviation"]);
         }
         /// <summary>
-        /// 误差
+        /// 环境因素
         /// </summary>
         /// <returns></returns>
         public static int getFactor()

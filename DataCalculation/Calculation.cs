@@ -65,7 +65,7 @@ namespace DataCalculation
             double n;
             n = Math.Abs(rssi);
             int d = Variable.getCalibration();
-            n = ((n - d) / (10 * Variable.getError()));
+            n = ((n - d) / (10 * Variable.getFactor()));
             n = Math.Pow(10, n);
             n += 0.005;
             n *= 100;
