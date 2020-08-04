@@ -38,8 +38,8 @@ namespace DataCalculation
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                //   heardSoundList1.Add(point);
-                heardSoundList.Add(po);
+                  heardSoundList.Add(point);
+                //heardSoundList.Add(po);
             }));
         }
     }

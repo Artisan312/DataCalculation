@@ -63,9 +63,9 @@ namespace DataCalculation
         /// 误差
         /// </summary>
         /// <returns></returns>
-        public static double getError()
+        public static int getError()
         {
-            return Convert.ToDouble(ConfigurationManager.AppSettings["Error"]);
+            return Convert.ToInt32(ConfigurationManager.AppSettings["Error"]);
         }
         /// <summary>
         /// 允许偏差
@@ -79,9 +79,9 @@ namespace DataCalculation
         /// 环境因素
         /// </summary>
         /// <returns></returns>
-        public static int getFactor()
+        public static double getFactor()
         {
-            return Convert.ToInt32(ConfigurationManager.AppSettings["Factor"]);
+            return Convert.ToDouble(ConfigurationManager.AppSettings["Factor"]);
         }
         /// <summary>
         /// 方差
@@ -126,7 +126,7 @@ namespace DataCalculation
         }
         public static string getconnStr()
         {
-            return ConfigurationManager.AppSettings["connStr"].ToString();
+            return ConfigurationManager.ConnectionStrings["connStr"].ToString();
         }
         public static string getdbname()
         {

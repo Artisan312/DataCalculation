@@ -29,7 +29,7 @@ namespace DataCalculation
         private static PointList<Point> heardSoundList1 = new PointList<Point>();
         private static PointList<Point> heardSoundList2 = new PointList<Point>();
         private static PointList<Point> heardSoundList3 = new PointList<Point>();
-        private static MongodbHandler mongodbHandler;
+        private static MongodbHandler mongodbHandle=new MongodbHandler();
         private static int[][] dictionary = new int[3][];
         private List<int>[] data = new List<int>[] { new List<int>(), new List<int>(), new List<int>() };
         private static string[] gateway = new string[] { "24:6F:28:2E:B0:6C", "FC:F5:C4:15:30:24", "24:62:AB:D0:B4:E8" };
@@ -109,8 +109,8 @@ namespace DataCalculation
                 //Write(System.Text.Encoding.Default.GetBytes("1:" + Calculation.rssi[0] + ";2:" + Calculation.rssi[1] + ";3:" + Calculation.rssi[2] + "\r\n"));
                 window.AppPoint(po, pi);
                 PersonD personD = new PersonD();
-                personD.Factor = Variable.getFactor();
-                personD.rssi = Variable.getCalibration();
+                personD.Factor =Convert.ToDouble( Variable.getFactor());
+                personD.rssi =Convert.ToInt32(Variable.getCalibration());
                 personD.time= DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0); 
                 personD.RssiA = data[0];
                 personD.RssiB = data[1];
@@ -119,7 +119,7 @@ namespace DataCalculation
                 personD.DistanceB = Calculation.rssi[1];
                 personD.DistanceC = Calculation.rssi[2];
                 personD.point = po;
-                mongodbHandler.Add(personD);
+                mongodbHandle.Add(personD);
                 data = new List<int>[] { new List<int>(), new List<int>(), new List<int>() };
                // Write(System.Text.Encoding.Default.GetBytes("\r" + po.X + "," + po.Y + "\n" + pi.X + "," + pi.Y + "\r\n\n\n"));
             }
