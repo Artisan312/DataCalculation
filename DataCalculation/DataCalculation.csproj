@@ -103,6 +103,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Algorithm.cs" />
     <Compile Include="Calculation.cs" />
     <Compile Include="Kalman.cs" />
     <Compile Include="MongodbHandler.cs" />

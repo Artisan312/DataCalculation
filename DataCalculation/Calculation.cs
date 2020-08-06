@@ -15,6 +15,7 @@ namespace DataCalculation
         public static int[] rssi = new int[3];
         public static Point[] gateway_coordinate;
         private static Point p = new Point(0, 0);
+        private static Algorithm algorithm = new Algorithm();
         //public static Point Now;
         //private static Point before;
 
@@ -84,6 +85,8 @@ namespace DataCalculation
         public static Point threePoints()
         {
             gateway_coordinate = Variable.getGateway();
+            algorithm.GetSide(gateway_coordinate);
+            rssi=algorithm.LongDouble(rssi);
             double x = 0, y = 0;
             double x2, y2;
             if (rssi == null || gateway_coordinate == null)
