@@ -103,10 +103,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Algorithm.cs" />
     <Compile Include="Calculation.cs" />
     <Compile Include="Kalman.cs" />
     <Compile Include="MongodbHandler.cs" />
+    <Compile Include="Optimization.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="PersonD.cs" />
     <Compile Include="PointList.cs" />
     <Compile Include="Variable.cs" />
@@ -133,7 +134,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

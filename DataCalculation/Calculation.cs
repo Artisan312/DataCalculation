@@ -7,46 +7,71 @@ using System.Windows;
 
 namespace DataCalculation
 {
+    public delegate void RssiKalmanDel(double[] r);
     class Calculation
     {
-        private static Kalman kalman_1;
-        private static Kalman kalman_2;
-        private static Kalman kalman_3;
+        //private static RssiKalmanDel RssiKalman;
+        //private static Kalman kalman_1;
+        //private static Kalman kalman_2;
+        //private static Kalman kalman_3;
+
         public static int[] rssi = new int[3];
+        public static List<double> R;
         public static Point[] gateway_coordinate;
         private static Point p = new Point(0, 0);
-        private static Algorithm algorithm = new Algorithm();
+        private static double SideS;
         //public static Point Now;
         //private static Point before;
 
         public static void CalculateTheDistance(int[][] dictionary)
         {
-            kalman_1 = new Kalman(Variable.getPredeterminedVariance(), Variable.getVariance());
-            kalman_2 = new Kalman(Variable.getPredeterminedVariance(), Variable.getVariance());
-            kalman_3 = new Kalman(Variable.getPredeterminedVariance(), Variable.getVariance());
-            rssi[0] = Convert.ToInt32((kalman_count(kalman_1, dictionary[0]) * 100));
-            rssi[1] = Convert.ToInt32((kalman_count(kalman_2, dictionary[1]) * 100));
-            rssi[2] = Convert.ToInt32((kalman_count(kalman_3, dictionary[2]) * 100));
+            R = new List<double>();
+            //kalman_1 = new Kalman(Variable.getVariance(), Variable.getPredeterminedVariance(), Average(dictionary[0]));
+            //kalman_2 = new Kalman(Variable.getVariance(), Variable.getPredeterminedVariance(), Average(dictionary[1]));
+            //kalman_3 = new Kalman(Variable.getVariance(), Variable.getPredeterminedVariance(), Average(dictionary[2]));
+            //rssi[0] = Convert.ToInt32((kalman_count(kalman_1, dictionary[0]) * 100));
+            //rssi[1] = Convert.ToInt32((kalman_count(kalman_2, dictionary[1]) * 100));
+            //rssi[2] = Convert.ToInt32((kalman_count(kalman_3, dictionary[2]) * 100));
+            gateway_coordinate = Variable.getGateway();
+            for(int i=0;i<3;i++)
+            {
+                rssi[i] = Convert.ToInt32(Count(new Optimization(dictionary[i], GetSide(gateway_coordinate), Variable.getDeviation()).data()) * 100);
+            }
+
         }
-        private static double kalman_count(Kalman kalman, int[] rssi)
+        public static double Average(int[] p)
         {
-            double gap = 0;
-            int d = 0;
-            for (int i = 0; i < rssi.Length && rssi[i] != 0; i++)
-            {
-                gap = kalman.KalmanFilter(rssi[i]);
-            }
-            d = rssi[0];
-            for (int i = 1; i < rssi.Length && rssi[i] != 0; i++)
-            {
-                if (d != Limiting(d, rssi[i]))
-                {
-                    d = Limiting(d, rssi[i]);
-                    gap = kalman.KalmanFilter(d);
-                }
-            }
-            return Count(gap);
+            int n=0;
+            for (int i = 0; i < p.Length; i++)
+                n += p[i];
+            return n / (p.Length);
         }
+        //private static double kalman_count(Kalman kalman, int[] rssi)
+        //{
+
+        //    double[] rs = new double[rssi.Length];
+        //    double gap = 0;
+        //    int d = 0;
+            
+        //    for (int i = 0; i < rssi.Length && rssi[i] != 0; i++)
+        //    {
+
+        //        rs[i] = kalman.KalmanFilter(rssi[i]);
+        //        //gap = rs[i];
+        //    }
+        //    //d = rssi[0];
+        //    //for (int i = 1; i < rssi.Length && rssi[i] != 0; i++)
+        //    //{
+        //    //    if (d != Limiting(d, rssi[i]))
+        //    //    {
+        //    //        d = Limiting(d, rssi[i]);
+        //    //        gap = kalman.KalmanFilter(d);
+        //    //    }
+        //    //}
+        //    //RssiKalman(rs);
+        //    R.Add(gap);
+        //    return Count(gap);
+        //}
         private static int Limiting(int d, int b)
         {
             if ((b - d) <= Variable.getDeviation())//(((d-b)<=deviation)||((b-d)<=deviation))
@@ -84,10 +109,10 @@ namespace DataCalculation
          */
         public static Point threePoints()
         {
-            gateway_coordinate = Variable.getGateway();
-            algorithm.GetSide(gateway_coordinate);
-            rssi=algorithm.LongDouble(rssi);
-            double x = 0, y = 0;
+            //double x = 0, y = 0;
+            int n = 0;
+            double[] x = new double[3];
+            double[] y = new double[3];
             double x2, y2;
             if (rssi == null || gateway_coordinate == null)
                 return p;
@@ -104,28 +129,29 @@ namespace DataCalculation
                     double p2p = Math.Sqrt(x2 + y2);
                     if (rssi[i] + rssi[j] <= p2p)
                     {
-                        x += gateway_coordinate[i].X + (gateway_coordinate[j].X - gateway_coordinate[i].X) * rssi[i] / (rssi[i] + rssi[j]);
-                        y += gateway_coordinate[i].Y + (gateway_coordinate[j].Y - gateway_coordinate[i].Y) * rssi[i] / (rssi[i] + rssi[j]);
+                        x[n]= gateway_coordinate[i].X + (gateway_coordinate[j].X - gateway_coordinate[i].X) * rssi[i] / (rssi[i] + rssi[j]);
+                        y[n]= gateway_coordinate[i].Y + (gateway_coordinate[j].Y - gateway_coordinate[i].Y) * rssi[i] / (rssi[i] + rssi[j]);
                     }
                     else
                     {
                         double dr = p2p / 2 + (rssi[i] * rssi[i] - rssi[j] * rssi[j]) / (2 * p2p);
-                        x += gateway_coordinate[i].X + (gateway_coordinate[j].X - gateway_coordinate[i].X) * dr / p2p;
-                        y += gateway_coordinate[i].Y + (gateway_coordinate[j].Y - gateway_coordinate[i].Y) * dr / p2p;
+                        x[n] = gateway_coordinate[i].X + (gateway_coordinate[j].X - gateway_coordinate[i].X) * dr / p2p;
+                        y[n] = gateway_coordinate[i].Y + (gateway_coordinate[j].Y - gateway_coordinate[i].Y) * dr / p2p;
                     }
+                    n++;
                 }
             }
-            x /= 3;
-            y /= 3;
-            x += 0.005;
-            x *= 100;
-            x = (int)x;
-            x = x / 100;
-            y += 0.005;
-            y *= 100;
-            y = (int)y;
-            y = y / 100;
-            return new Point(x, y);
+            //x /= 3;
+            //y /= 3;
+            //x += 0.005;
+            //x *= 100;
+            //x = (int)x;
+            //x = x / 100;
+            //y += 0.005;
+            //y *= 100;
+            //y = (int)y;
+            //y = y / 100;
+            return new Point(x[2], y[0]);
         }
 
         /*
@@ -149,6 +175,24 @@ namespace DataCalculation
             double x = (b * f - e * c) / (2 * b * d - 2 * a * e);
             double y = (a * f - d * c) / (2 * a * e - 2 * b * d);
             return (new Point(x, y));
+        }
+        public static double GetSide(Point[] p)
+        {
+            double x = 0, y = 0;
+            double x1 = 0, y1 = 0;
+            foreach (Point point in p)
+            {
+                if (x < point.X)
+                    x = point.X;
+                else if (point.X < x1)
+                    x1 = point.X;
+                if (y < point.Y)
+                    y = point.Y;
+                else if (point.Y < y1)
+                    y1 = point.Y;
+            }
+            SideS = x + y + Math.Abs(y1 + x1);
+            return SideS;
         }
     }
 }

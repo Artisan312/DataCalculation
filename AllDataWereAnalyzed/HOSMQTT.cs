@@ -15,11 +15,11 @@ using System.Windows;
 
 namespace AllDataWereAnalyzed
 {
-    class HOSMQTT:Person
+    public delegate void ChangedHandler(byte[] b);
+    class HOSMQTT
     {
         public static  byte[] text;
         public  event ChangedHandler ChangeName;
-        public event ChangedHandler Position;
         private static MqttClient mqttClient = null;
         private static IMqttClientOptions options = null;
         private static bool runState = false;
@@ -99,7 +99,6 @@ namespace AllDataWereAnalyzed
         private  void Work()
         {
             running = true;
-            // Console.WriteLine("Work >>Begin");
             try
             {
                 var factory = new MqttFactory();
@@ -195,7 +194,7 @@ namespace AllDataWereAnalyzed
                 List<TopicFilter> listTopic = new List<TopicFilter>();
                 if (listTopic.Count <= 0)
                 {
-                    var topicFilterBulder = new TopicFilterBuilder().WithTopic(ConfigurationManager.AppSettings["Topic"]).Build();
+                    var topicFilterBulder = new TopicFilterBuilder().WithTopic("coenc").Build();
                     listTopic.Add(topicFilterBulder);
                     //Console.WriteLine("Connected >>Subscribe " + Topic);
                 }
@@ -245,35 +244,12 @@ namespace AllDataWereAnalyzed
                 string Topic = e.ApplicationMessage.Topic;
                 string QoS = e.ApplicationMessage.QualityOfServiceLevel.ToString();
                 string Retained = e.ApplicationMessage.Retain.ToString();
-
+                ChangeName(text);
 
             }
             catch (Exception exp)
             {
                 Console.WriteLine(exp.Message);
-            }
-            Age = text;
-        }
-        object age = 0;
-        public virtual object Age
-        {
-            get { return age; }
-            set
-            {
-                base.OnChanged(this, value, Age, ChangeName);
-                age=value ;
-                OnPropertyChanged("Age");
-            }     
-        }
-        Point p=new Point(0,0);
-        public virtual Point point
-        {
-            get { return p; }
-            set
-            {
-                base.OnChanged(this, value, point, Position);
-                p = value;
-                OnPropertyChanged("point");
             }
         }
     }

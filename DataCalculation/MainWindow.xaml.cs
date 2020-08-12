@@ -29,7 +29,14 @@ namespace DataCalculation
         private static PointList<Point> heardSoundList1 = new PointList<Point>();
         private static PointList<Point> heardSoundList2 = new PointList<Point>();
         private static PointList<Point> heardSoundList3 = new PointList<Point>();
+        private static PointList<Point> heardSoundList4 = new PointList<Point>();
+        private static PointList<Point> heardSoundList5 = new PointList<Point>();
+        private static PointList<Point> heardSoundList6 = new PointList<Point>();
+        private static PointList<Point> heardSoundList7 = new PointList<Point>();
+        private static PointList<Point> heardSoundList8 = new PointList<Point>();
+        private static PointList<Point> heardSoundList9 = new PointList<Point>();
         private static MongodbHandler mongodbHandle=new MongodbHandler();
+        private static int[] bd = new int[] { 0, 0, 0 };
         private static int[][] dictionary = new int[3][];
         private List<int>[] data = new List<int>[] { new List<int>(), new List<int>(), new List<int>() };
         private static string[] gateway = new string[] { "24:6F:28:2E:B0:6C", "FC:F5:C4:15:30:24", "24:62:AB:D0:B4:E8" };
@@ -44,26 +51,50 @@ namespace DataCalculation
             mqtt = new HOSMQTT();
             mqtt.ChangeName += new ChangedHandler(m_ChangeName);
 
+            Init();
+
+        }
+        private void Init()
+        {
             cptEcg1.Children.RemoveAll(typeof(LineGraph));
-            heardSoundList1.Count = 30;
+            heardSoundList1.Count = 80;
             heardSoundList1.Collection.RemoveAll(typeof(Point));
-            cptEcg1.AddLineGraph(heardSoundList1, Color.FromArgb(0xFF, 0x00, 0x00, 0x00), 1, "网关1");
+            cptEcg1.AddLineGraph(heardSoundList1, Color.FromArgb(0xFF, 0x00, 0x0F, 0x00), 1, "网关1");
+            heardSoundList2.Count = 80;
+            heardSoundList2.Collection.RemoveAll(typeof(Point));
+            cptEcg1.AddLineGraph(heardSoundList2, Color.FromArgb(0xFF, 0xFF, 0x00, 0xF0), 1, "网关2");
+            heardSoundList3.Count = 80;
+            heardSoundList3.Collection.RemoveAll(typeof(Point));
+            cptEcg1.AddLineGraph(heardSoundList3, Color.FromArgb(0xFF, 0x00, 0xFF, 0x00), 1, "网关3");
             cptEcg1.AxisGrid.BorderBrush = new SolidColorBrush(Color.FromArgb(0, 0, 0, 255));
             cptEcg1.Viewport.FitToView();
+
             cptEcg2.Children.RemoveAll(typeof(LineGraph));
-            heardSoundList2.Count = 30;
-            heardSoundList2.Collection.RemoveAll(typeof(Point));
-            cptEcg2.AddLineGraph(heardSoundList2, Color.FromArgb(0xFF, 0xFF, 0x00, 0xFF), 1, "网关2");
+            heardSoundList4.Count = 30;
+            heardSoundList4.Collection.RemoveAll(typeof(Point));
+            cptEcg2.AddLineGraph(heardSoundList4, Color.FromArgb(0xFF, 0x00, 0x0F, 0x00), 1, "网关1");
+            heardSoundList5.Count = 30;
+            heardSoundList5.Collection.RemoveAll(typeof(Point));
+            cptEcg2.AddLineGraph(heardSoundList5, Color.FromArgb(0xFF, 0xFF, 0x00, 0xF0), 1, "网关2");
+            heardSoundList6.Count = 30;
+            heardSoundList6.Collection.RemoveAll(typeof(Point));
+            cptEcg2.AddLineGraph(heardSoundList6, Color.FromArgb(0xFF, 0x00, 0xFF, 0x00), 1, "网关3");
             cptEcg2.AxisGrid.BorderBrush = new SolidColorBrush(Color.FromArgb(0, 0, 0, 255));
             cptEcg2.Viewport.FitToView();
+
             cptEcg3.Children.RemoveAll(typeof(LineGraph));
-            heardSoundList3.Count = 30;
-            heardSoundList3.Collection.RemoveAll(typeof(Point));
-            cptEcg3.AddLineGraph(heardSoundList3, Color.FromArgb(0xFF, 0xF0, 0x0F, 0x0F), 1, "网关3");
+            heardSoundList7.Count = 30;
+            heardSoundList7.Collection.RemoveAll(typeof(Point));
+            cptEcg3.AddLineGraph(heardSoundList7, Color.FromArgb(0xFF, 0x00, 0x0F, 0x00), 1, "网关1");
+            heardSoundList8.Count = 30;
+            heardSoundList8.Collection.RemoveAll(typeof(Point));
+            cptEcg3.AddLineGraph(heardSoundList8, Color.FromArgb(0xFF, 0xFF, 0x00, 0xF0), 1, "网关2");
+            heardSoundList9.Count = 30;
+            heardSoundList9.Collection.RemoveAll(typeof(Point));
+            cptEcg3.AddLineGraph(heardSoundList9, Color.FromArgb(0xFF, 0x00, 0xFF, 0x00), 1, "网关3");
             cptEcg3.AxisGrid.BorderBrush = new SolidColorBrush(Color.FromArgb(0, 0, 0, 255));
             cptEcg3.Viewport.FitToView();
         }
-
         private void m_ChangeName(object sender, object v)
         {
             //Dispatcher.Invoke(new Action(() =>
@@ -79,6 +110,7 @@ namespace DataCalculation
                     foreach (byte[] d in mc2.devices)
                     {
                         str = byteToHexStr(d);
+                       
                         Label(str);
                     }
                 }
@@ -99,13 +131,16 @@ namespace DataCalculation
             //     for (i = 0; gateway[i] != gateway_mac; i++);
             i = gateway.ToList().IndexOf(gateway_mac);
             data[i].Add(rssi);
+            AddRs(i, rssi);
             if (data[0].Count >= 80 && data[2].Count >= 80 && data[1].Count >= 80)
             {
+
                 dataFun();
                 Calculation.CalculateTheDistance(dictionary);
                 Point po = Calculation.threePoints();
                 Point pi = Calculation.calculaton();
                 DynamicGraph(Calculation.rssi);
+                AddR(Calculation.R);
                 //Write(System.Text.Encoding.Default.GetBytes("1:" + Calculation.rssi[0] + ";2:" + Calculation.rssi[1] + ";3:" + Calculation.rssi[2] + "\r\n"));
                 window.AppPoint(po, pi);
                 PersonD personD = new PersonD();
@@ -150,20 +185,58 @@ namespace DataCalculation
             F.Write(Byte, 0, Byte.Length);
             F.Close();
         }
-
+        private void AddRs(int i,int n)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                switch (i)
+                {
+                    case 0: {
+                            heardSoundList1.Add(new Point(bd[i], n));
+                            bd[i]++;
+                        }; break;
+                    case 1: {
+                            heardSoundList2.Add(new Point(bd[i], n));
+                            bd[i]++;
+                        }; break;
+                    case 2: {
+                            heardSoundList3.Add(new Point(bd[i], n));
+                            bd[i]++;
+                        }; break;
+                }
+            }));
+        }
+        private void AddR(List<double> d)
+        {
+            double[] r = new double[3];
+            int i=0;
+            foreach(double b in d)
+            {
+                r[i] = b;
+                i++;
+            }
+                
+            Dispatcher.Invoke(new Action(() =>
+            {
+                heardSoundList4.Add(new Point(x, r[0]));
+                heardSoundList5.Add(new Point(x, r[1]));
+                heardSoundList6.Add(new Point(x, r[2]));
+            }));
+            x++;
+        }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="r"></param>
         private void DynamicGraph(int[] r)
         {
-            x++;
             Dispatcher.Invoke(new Action(() =>
             {
-                heardSoundList1.Add(new Point(x, r[0]));
-                heardSoundList2.Add(new Point(x, r[1]));
-                heardSoundList3.Add(new Point(x, r[2]));
+                heardSoundList7.Add(new Point(x, r[0]));
+                heardSoundList8.Add(new Point(x, r[1]));
+                heardSoundList9.Add(new Point(x, r[2]));
             }));
+            
         }
         /// <summary>
         /// 

@@ -4,9 +4,34 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AllDataWereAnalyzed"
+        xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="700" Width="1200" Loaded="open">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <d3:ChartPlotter x:Name="cptEcg1"  Background="Transparent" BorderBrush="#FF4B53A2" Foreground="#FF9BDAE8" Margin="0" >
+            <d3:ChartPlotter.VerticalAxis>
+                <d3:VerticalIntegerAxis />
+            </d3:ChartPlotter.VerticalAxis>
+            <d3:ChartPlotter.HorizontalAxis>
+                <d3:HorizontalIntegerAxis />
+            </d3:ChartPlotter.HorizontalAxis>
+            <d3:Header Content="接收的rssi" HorizontalAlignment="Left" FontFamily="Microsoft YaHei UI" Foreground="#FF0C0B0B" FontSize="16" Height="20" Width="93"/>
+        </d3:ChartPlotter>
+        <d3:ChartPlotter x:Name="cptEcg2"  Background="Transparent" BorderBrush="#FF4B53A2" Foreground="#FF9BDAE8" Margin="0" Grid.Row="1" >
+            <d3:ChartPlotter.VerticalAxis>
+                <d3:VerticalIntegerAxis />
+            </d3:ChartPlotter.VerticalAxis>
+            <d3:ChartPlotter.HorizontalAxis>
+                <d3:HorizontalIntegerAxis />
+            </d3:ChartPlotter.HorizontalAxis>
+            <d3:Header Content="滤波后的rssi" HorizontalAlignment="Left" FontFamily="Microsoft YaHei UI" Foreground="#FF0C0B0B" FontSize="16" Height="24" Width="96"/>
+        </d3:ChartPlotter>
     </Grid>
 </Window>

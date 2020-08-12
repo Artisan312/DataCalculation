@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DataCalculation"
         mc:Ignorable="d"
         xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
-        Title="Window1" Height="500" Width="800">
+        Title="Window1" Height="500" Width="800" WindowStartupLocation="Manual" WindowState="Maximized">
     <Grid>
         <d3:ChartPlotter x:Name="cptEcg"  Background="Transparent" BorderBrush="#FF4B53A2" Foreground="#FF9BDAE8" >
             <d3:ChartPlotter.VerticalAxis>

@@ -27,9 +27,9 @@ namespace DataCalculation
             InitializeComponent();
 
             cptEcg.Children.RemoveAll(typeof(LineGraph));
-            heardSoundList.Count = 30;
+            heardSoundList.Count = 1000;
             heardSoundList.Collection.RemoveAll(typeof(Point));
-            cptEcg.AddLineGraph(heardSoundList, Color.FromArgb(0xFF, 0x00, 0x00, 0x00), 1, "位置");
+            cptEcg.AddLineGraph(heardSoundList, Color.FromArgb(0xFF, 0xF0, 0x0F, 0x00), 2, "位置");
             cptEcg.AxisGrid.BorderBrush = new SolidColorBrush(Color.FromArgb(0, 0, 0, 255));
             cptEcg.Viewport.FitToView();
 
@@ -38,7 +38,7 @@ namespace DataCalculation
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                  heardSoundList.Add(point);
+                  heardSoundList.Add(po);
                 //heardSoundList.Add(po);
             }));
         }
